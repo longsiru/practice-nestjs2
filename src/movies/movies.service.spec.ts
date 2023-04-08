@@ -30,6 +30,11 @@ describe('MoviesService', () => {
     // });
   });
 
+  beforeAll(() => {});
+
+  //在afterAll()里面可以设置数据库，可以添加一个功能来清理（全部清理）
+  afterAll(() => {});
+
   //3.以下是测试部分
   it('should be defined', () => {
     expect(service).toBeDefined();
