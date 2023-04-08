@@ -13,6 +13,7 @@ export class MoviesService {
   }
 
   getOne(id: number): Movie {
+    console.log(typeof id);
     //return this.movies.find((movie) => movie.id === parseInt(id)); //这样转换id，因为最开始我们设置ID为number，但是现在我们用的是字符串来接受ID，所以在在最后要修复string类型id为number id。 转换方式了：parseInt(id)==+id两种写法。
     //有一个问题是，如果有人查找了一个不存在的电影我们需要告诉他不存在。--->
     const movie = this.movies.find((movie) => movie.id === id);
