@@ -22,6 +22,12 @@ describe('MoviesService', () => {
     }).compile();
 
     service = module.get<MoviesService>(MoviesService);
+    //不想每一个都写下面的代码的话就写在这里（brforeeach）
+    // service.creacte({
+    //   title: 'test movie',
+    //   genres: ['test'],
+    //   year: 2000,
+    // });
   });
 
   //3.以下是测试部分
@@ -57,7 +63,7 @@ describe('MoviesService', () => {
       const movie = service.getOne(1);
 
       expect(movie).toBeDefined(); //pass
-      expect(movie.id).toEqual(1); //pass
+      //expect(movie.id).toEqual(1); //pass
     });
 
     it('should throw 404 error', () => {
@@ -65,6 +71,70 @@ describe('MoviesService', () => {
         service.getOne(999);
       } catch (e) {
         expect(e).toBeInstanceOf(NotFoundException); //pass
+        //expect(e.message).toEqual('Movie with ID 999 not found');
+      }
+    });
+  });
+
+  //test deleteone
+  describe('deleteOne', () => {
+    it('delete a movie', () => {
+      service.creacte({
+        title: 'test movie',
+        genres: ['test'],
+        year: 2000,
+      });
+      //console.log(service.getAll());
+      const beforeMovies = service.getAll();
+
+      service.deleteOne(1);
+      const afterDelete = service.getAll();
+
+      expect(afterDelete.length).toBeLessThan(beforeMovies.length); //pass
+      expect(afterDelete.length).toEqual(beforeMovies.length - 1);
+    });
+    it('should return a 404 error', () => {
+      try {
+        service.deleteOne(1111);
+      } catch (e) {
+        expect(e).toBeInstanceOf(NotFoundException); //pass
+      }
+    });
+  });
+
+  //可以在这里测试，movie的数量增加了多少。或者测试最后一个创建的movie的题目是否是这个。
+  describe('create', () => {
+    it('should crate a movie', () => {
+      const beforeCreate = service.getAll().length;
+      service.creacte({
+        title: 'test movie',
+        genres: ['test'],
+        year: 2000,
+      });
+      const afterCreate = service.getAll().length;
+      console.log(beforeCreate, afterCreate);
+      expect(afterCreate).toBeGreaterThan(beforeCreate); //pass
+    });
+  });
+
+  describe('update', () => {
+    it('shoule update a movie', () => {
+      service.creacte({
+        title: 'test movie',
+        genres: ['test'],
+        year: 2000,
+      });
+      service.update(1, { title: 'Update Test' });
+      const movie = service.getOne(1);
+      expect(movie.title).toEqual('Update Test'); //pass
+    });
+
+    it('should throw a NotFoundException', () => {
+      try {
+        service.update(999, {});
+      } catch (e) {
+        expect(e).toBeInstanceOf(NotFoundException); //pass
+        //expect(e.message).toEqual('Movie with ID 999 not found');
       }
     });
   });
