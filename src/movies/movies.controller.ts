@@ -1,3 +1,5 @@
+//nestjs运行在express之上。因此如果需要在controller中使用request和response对象，则可哟使用它们。---- Res  Req
+import { UpdateMovieDTO } from './dto/update-movie.dto';
 import { CreateMovieDTO } from './dto/create-movie.dto';
 import { Movie } from './entites/movie.entity';
 import { MoviesService } from './movies.service';
@@ -19,6 +21,8 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
   @Get()
   getAll(): Movie[] {
+    //@Req() req, @Res() res 这样可以访问express应用程序。但是express object，如req,res不是一个好的方法。 nestjs适用于两个框架（framework），express和fastify。 fastify是express的两倍。nestjs同时运行在两个框架（framework）上。所以在express中不要大量使用req,res对象很重要。
+    //如果使用了express的话换了fremawork的话就会有问题，但是如果一直只用nestjs的话，可以直接从express切换到fastify，甚至不会停止工作。
     return this.moviesService.getAll();
   }
 
@@ -51,7 +55,7 @@ export class MoviesController {
 
   //put 更新了所有资源。也许我们应该些一个补丁（patch）。patch仅更新部分资源。
   @Patch('/:id')
-  patch(@Param('id') movieId: number, @Body() updateData) {
+  patch(@Param('id') movieId: number, @Body() updateData: UpdateMovieDTO) {
     // return {
     //   updateMovie: movieId,
     //   ...updateData,

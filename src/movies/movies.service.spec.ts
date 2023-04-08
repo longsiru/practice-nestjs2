@@ -1,9 +1,20 @@
+//.spec.ts包含测试的文件。
+//例如这是MoviesService的测试文件。
+//在nestjs，jest正在查看.spec.ts包文件，它的设置就是为了让我们可以找到.spec.ts。
+//比如我现在要查看test：cov，然后告诉我们代码经过了多少测试。
+//test:e2e--测试所有系统，测试整个页面。
+//每个funcition单独测试叫测试单元。
+//我们将用单元测试来测试movies service
+
+//开始测试1.describe
 import { Test, TestingModule } from '@nestjs/testing';
 import { MoviesService } from './movies.service';
 
+//1.describe
 describe('MoviesService', () => {
   let service: MoviesService;
 
+  //2.beforeEach在test之前运行。
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [MoviesService],
@@ -12,7 +23,16 @@ describe('MoviesService', () => {
     service = module.get<MoviesService>(MoviesService);
   });
 
+  //3.以下是测试部分
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  //4.写第一个测试,第一我们要定义，第二要测试的部分创建一个函数来测试
+  it('should be 4', () => {
+    //第三在这里写下测试需要的条件
+    //expect(2 + 2).toEqual(4); //pass：console:should be 4 (2 ms)
+    //expect(2 + 2).toEqual(5); // Expected: 5 || Received: 4
+    expect(2 + 3).toEqual(5); //pass：console:should be 4 (2 ms)
   });
 });

@@ -2,6 +2,7 @@ import { CreateMovieDTO } from './dto/create-movie.dto';
 import { Movie } from './entites/movie.entity';
 //要创建一个数据库，service将处理查询之类的业务。
 import { Body, Injectable, NotFoundException } from '@nestjs/common';
+import { UpdateMovieDTO } from './dto/update-movie.dto';
 
 @Injectable()
 export class MoviesService {
@@ -34,7 +35,7 @@ export class MoviesService {
     });
   }
   //此时我们没有开启验证，任何entuty意外的内容也可以被添加。所以要开启验证。加@body.然后我们添加dto，DTO代表数据传输对象。
-  update(id: number, @Body() updateData) {
+  update(id: number, @Body() updateData: UpdateMovieDTO) {
     const movie = this.getOne(id); //先get一个movie，id为1，导入movie
     this.deleteOne(id); //然后删除movie
     this.movies.push({
